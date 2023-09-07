@@ -1,31 +1,37 @@
-"use strict"
+"use strict";
+
 function solveEquation(a, b, c) {
-  "use strict";
-  let arr = []; 
-  let x;
-  const d = Math.pow(b, 2) - 4 * a * c;
-  if (d > 0 ) {
-    x = (-b + Math.sqrt(d) )/(2*a);
-    arr.push(x);
-    x = (-b - Math.sqrt(d) )/(2*a);
-    arr.push(x);
-  } else if (d === 0) {
-   x = -b/(2*a);
-   arr.push(x);
-  } 
-  console.log(arr);
-  return arr;
+  let arr = [];  
+  let d = (b ** 2) - (4 * a * c);
+	if (d < 0) {
+		arr.push();
+	} else if (d == 0) {		
+		let oneRoot = -b / (2 * a);
+			arr.push(oneRoot);
+	} else if (d > 0) {
+		let firstRoot = (-b + Math.sqrt(d))/(2 * a);
+		let secondRoot = (-b - Math.sqrt(d))/(2 * a);
+			arr.push(firstRoot, secondRoot);		  		
+	} 
+  return arr; 
 }
-solveEquation(1, 2, 1)
-  
-function calculateTotalMortgage(percent, contribution, amount, countMonths) //процент (в диапазоне от 0 до 100), начальный взнос, сумма кредита, срок в месяцах 
-{
-	const P = percent / 100 / 12;
-	const S = amount - contribution;
-	const n = countMonths;
-	const monthlyPayment = S * (P + P / (Math.pow(1 + P, n) - 1));
-	const totalAmount = (monthlyPayment * n).toFixed(2);
-	let num = Number(totalAmount);
-	return num;
+
+
+function calculateTotalMortgage(percent, contribution, amount, date) {
+   let totalAmount;
+		if (isNaN(percent)) {
+		return totalAmount = `Параметр "Процентная ставка" содержит неправильное значение "${percent}"`;
+	} else if (isNaN(contribution)) {
+		return totalAmount = `Параметр "Начальный взнос" содержит неправильное значение "${contribution}"`;
+	} else if (isNaN(amount)) {
+		return totalAmount = `Параметр "Общая стоимость" содержит неправильное значение "${amount}"`;
+	} 	
+	let returnAmountBank = amount - contribution;	
+	let date1 = new Date();	
+	let diff = Date.parse(date) - Date.parse(date1);
+	let creditTerm = Math.ceil(diff / 1000 / 60 / 60 / 24 / 30.5);	
+	let P = percent / 12 / 100;
+	let monthlyFee = returnAmountBank * (P + (P / (((1 + P) ** creditTerm) - 1)));
+			totalAmount = creditTerm * monthlyFee;				
+    return Number(totalAmount.toFixed(2));	
 }
-calculateTotalMortgage(10, 0, 50000, 12)
